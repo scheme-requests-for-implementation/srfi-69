@@ -1,104 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Basic hash tables</title>
-    <link href="/admin.css" rel="stylesheet">
-    <link href="/list.css" rel="stylesheet">
-    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-     });
-    </script>
-    <script crossorigin="anonymous" integrity=
-            "sha384-Ra6zh6uYMmH5ydwCqqMoykyf1T/+ZcnOQfFPhDrp2kI4OIxadnhsvvA2vv9A7xYv" src=
-            "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-            type="text/javascript"></script>
-  </head>
-
-  <body>
-    <h1>SRFI 69: Basic hash tables</h1>
-    <p class="authors">by Panu Kalliokoski</p>
-    <p class="based-on"></p>
-    <p class="status">status: <em>final</em> (2005-09-14)</p>
-    <p class="keywords">keywords: <a href="https://srfi.schemers.org/?keywords=data-structure">Data Structure</a></p><span class="see-also">See also <a href="/srfi-125/">SRFI 125: Intermediate hash tables</a> and <a href="/srfi-126/">SRFI 126: R6RS-based hashtables</a>.</span>
-    <p class="library-name">library name: basic-hash-tables</p>
-
-    <ul class="info">
-      <li><a href="srfi-69.html">The SRFI Document</a></li>
-      <li><a href="https://srfi-email.schemers.org/srfi-69/">Discussion Archive</a></li>
-      <li><a href="https://github.com/scheme-requests-for-implementation/srfi-69">Git repo (on Github)</a></li>
-      <li>
-        <a href="mailto:srfi-69@srfi.schemers.org">srfi-69@<span class="antispam">nospam</span>srfi.schemers.org (subscribers only)</a></li>
-      <li>
-        <span class="firefox-column-workaround">
-          <form method="POST" action="https://www.simplelists.com/subscribe.php">
-            <div class="title">Subscribe to srfi-69 mailing list</div>
-            <input name="email"
-                   placeholder="email address"
-                   tabindex="1"
-                   type="email" >
-            <input name="name"
-                   placeholder="full name"
-                   tabindex="2"
-                   type="text" >
-            <p>
-              <input id="sub-digest"
-                     name="digest"
-                     tabindex="3"
-                     type="checkbox"
-                     value="digest" >
-              <label for="sub-digest">daily digest?</label></p>
-            <input class="submit"
-                   name="submit"
-                   tabindex="4"
-                   type="submit"
-                   value="Subscribe to srfi-69" >
-            <input type="hidden" name="action" value="subscribe">
-            <input type="hidden" name="list" value="srfi-69@srfi.schemers.org"></form></a></li>
-      <li>
-        <span class="firefox-column-workaround">
-          <form method="POST" action="https://www.simplelists.com/subscribe.php">
-            <p class="title">Unsubscribe from srfi-69 mailing list</p>
-            <input name="email"
-                   placeholder="email address"
-                   tabindex="5"
-                   type="email" >
-            <input class="submit"
-                   name="submit"
-                   tabindex="6"
-                   type="submit"
-                   value="Unsubscribe from srfi-69" >
-            <input name="action"
-                   type="hidden"
-                   value="unsubscribe" >
-            <input name="list"
-                   type="hidden"
-                   value="srfi-69@srfi.schemers.org"></form></a></li></ul>
-    <h2>Abstract</h2>      <p>This SRFI defines basic hash tables. Hash
-      tables are widely recognised as a fundamental data structure for a wide
-      variety of applications. A hash table is a data structure that:
-      <ol>
-        <li>provides a mapping from some set of keys to
-        some set of values associated to those keys
-        <li>has no intrinsic order for the (key, value)
-        associations it contains
-        <li>supports in-place modification as the
-        primary means of setting the contents of a hash table
-        <li>provides key lookup and destructive update
-        in amortised constant time, provided that a good hash function is
-        used.
-      </ol>
-      <p>This SRFI aims to accomplish these
-      goals:
-      <ol>
-        <li>to provide a consistent, generic and widely
-        applicable API for hash tables
-        <li>to improve code portability by providing a
-        standard hash table facility with guaranteed behaviour
-        <li>to help the programmer by defining utility
-        routines that account for the most common situations of using hash
-        tables.
-      </ol></body></html>
+    <head>
+      <!-- SPDX-FileCopyrightText: 2026 Arthur A. Gleckler -->
+      <!-- SPDX-License-Identifier: MIT -->
+      <title>Basic hash tables</title>
+      <script>!function(s, k, mq, r) {
+  var p = s.getItem(k), v = [null, 'light', 'dark'],
+      S = '<svg viewBox="0 0 20 20" width="1em" height="1em">',
+      C = '<circle cx="10" cy="10" r="9" ',
+      c = [S + C + 'fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 1A9 9 0 0 0 10 19Z" fill="currentColor"/></svg>',
+           S + C + 'fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+           S + C + 'fill="black" stroke="white" stroke-width="2"/></svg>'];
+  function a(t) { r.dataset.theme = t || (mq.matches ? 'dark' : 'light') }
+  a(p);
+  mq.onchange = function() { s.getItem(k) || a() };
+  document.addEventListener('DOMContentLoaded', function() {
+    var i = Math.max(0, v.indexOf(p)),
+        b = document.body.appendChild(document.createElement('button'));
+    b.id = 'theme-toggle';
+    function u() { b.innerHTML = c[i]; b.title = (v[i] || 'system') + ' theme' }
+    b.onclick = function() { i = (i + 1) % 3; v[i] ? s.setItem(k, v[i]) : s.removeItem(k); a(v[i]); u() };
+    u()
+  })
+}(localStorage, 'theme', matchMedia('(prefers-color-scheme: dark)'), document.documentElement);
+</script>
+      <link href="/admin.css" rel="stylesheet">
+      <link href="/list.css" rel="stylesheet">
+      <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+      <script crossorigin="anonymous" integrity="sha384-Ra6zh6uYMmH5ydwCqqMoykyf1T/+ZcnOQfFPhDrp2kI4OIxadnhsvvA2vv9A7xYv" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head>
+    <body>
+      <h1>SRFI 69: Basic hash tables</h1>
+      <p class="authors">by Panu Kalliokoski</p>
+      <p class="based-on"></p>
+      <p class="status">status: <em>final</em> (2005-09-14)</p>
+      <p class="keywords">keywords: <a href="https://srfi.schemers.org/?keywords=data-structure">Data Structure</a></p><span class="see-also">See also <a href="/srfi-125/">SRFI 125: Intermediate hash tables</a> and <a href="/srfi-126/">SRFI 126: R6RS-based hashtables</a>.</span>
+      <p class="library-name">library name: basic-hash-tables</p>
+      <ul class="info">
+        <li><a href="srfi-69.html">The SRFI Document</a></li>
+        <li><a href="https://srfi-email.schemers.org/srfi-69/">Discussion Archive</a></li>
+        <li><a href="https://github.com/scheme-requests-for-implementation/srfi-69">Git repo (on GitHub)</a></li>
+        <li><a href="mailto:srfi-69@srfi.schemers.org">srfi-69@<span class="antispam">nospam</span>srfi.schemers.org (subscribers only)</a></li>
+        <li><span class="firefox-column-workaround">
+            <form method="POST" action="https://www.simplelists.com/subscribe.php">
+              <div class="title">Subscribe to srfi-69 mailing list</div><input name="email" placeholder="email address" tabindex="1" type="email"><input name="name" placeholder="full name" tabindex="2" type="text">
+              <p><input id="sub-digest" name="digest" tabindex="3" type="checkbox" value="digest"><label for="sub-digest">daily digest?</label></p><input class="submit" name="submit" tabindex="4" type="submit" value="Subscribe to srfi-69"><input type="hidden" name="action" value="subscribe"><input type="hidden" name="list" value="srfi-69@srfi.schemers.org"></form></span></li>
+        <li><span class="firefox-column-workaround">
+            <form method="POST" action="https://www.simplelists.com/subscribe.php">
+              <div class="title">Unsubscribe from srfi-69 mailing list</div><input name="email" placeholder="email address" tabindex="5" type="email"><input class="submit" name="submit" tabindex="6" type="submit" value="Unsubscribe from srfi-69"><input type="hidden" name="action" value="unsubscribe"><input name="list" type="hidden" value="srfi-69@srfi.schemers.org"></form></span></li></ul>
+      <h2>Abstract</h2>      <p>This SRFI defines basic hash tables. Hash       tables are widely recognised as a fundamental data structure for a wide       variety of applications. A hash table is a data structure that:       <ol>         <li>provides a mapping from some set of keys to         some set of values associated to those keys         <li>has no intrinsic order for the (key, value)         associations it contains         <li>supports in-place modification as the         primary means of setting the contents of a hash table         <li>provides key lookup and destructive update         in amortised constant time, provided that a good hash function is         used.       </ol>       <p>This SRFI aims to accomplish these       goals:       <ol>         <li>to provide a consistent, generic and widely         applicable API for hash tables         <li>to improve code portability by providing a         standard hash table facility with guaranteed behaviour         <li>to help the programmer by defining utility         routines that account for the most common situations of using hash         tables.       </ol></body></html>
